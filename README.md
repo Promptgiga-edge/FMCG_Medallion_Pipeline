@@ -49,11 +49,11 @@ Fast-moving consumer goods (FMCG) companies generate high volumes of transaction
 
 ## 5. Data Tables
 
-dim_customers.csv
-dim_date.csv
-dim_products.csv
-dim_targets_orders.csv
-fact_order_lines.csv
+dim_customers.csv, 
+dim_date.csv, 
+dim_products.csv, 
+dim_targets_orders.csv, 
+fact_order_lines.csv, 
 fact_orders_aggregate.csv
 
 ---
