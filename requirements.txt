@@ -1,0 +1,13 @@
+# Airflow core
+apache-airflow
+
+# Postgres provider (4.0.1 supports Python 3.7)
+apache-airflow-providers-postgres
+
+# Database drivers & ORM
+psycopg2-binary
+SQLAlchemy
+
+# Data processing (compatible with Python 3.7)
+pandas
+pendulum
