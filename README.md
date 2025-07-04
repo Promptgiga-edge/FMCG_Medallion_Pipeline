@@ -178,6 +178,7 @@ bronze_targets.csv`
    docker-compose up -d
    ```
 4. **Trigger DAG** in Airflow UI
+5. Access the UI at http://localhost:8080.
 
 ---
 
