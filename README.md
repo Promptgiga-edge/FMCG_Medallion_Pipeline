@@ -1,45 +1,650 @@
-Overview
-========
+## FMCG Medallion Pipeline Project Documentation
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+---
 
-Project Contents
-================
+### Table of Contents
 
-Your Astro project contains the following files and folders:
+1. [Introduction](#introduction)
+2. [Business Context](#business-context)
+3. [Project Objectives](#project-objectives)
+4. [Architecture Overview](#architecture-overview)
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+   * 4.1. Pipeline Layers
+   * 4.2. Technology Stack
+5. [Data Sources](#data-sources)
+6. [Medallion Layers](#medallion-layers)
 
-Deploy Your Project Locally
-===========================
+   * 6.1. Bronze Layer
+   * 6.2. Silver Layer
+   * 6.3. Gold Layer
+7. [Business Logic](#business-logic)
+8. [Orchestration & Scheduling](#orchestration--scheduling)
+9. [Deployment & Infrastructure](#deployment--infrastructure)
+10. [Monitoring & Alerting](#monitoring--alerting)
+11. [Security & Governance](#security--governance)
+12. [Getting Started](#getting-started)
+13. [Contributing](#contributing)
+14. [License](#license)
 
-Start Airflow on your local machine by running 'astro dev start'.
+---
 
-This command will spin up five Docker containers on your machine, each for a different Airflow component:
+## 1. Introduction
 
-- Postgres: Airflow's Metadata Database
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- DAG Processor: The Airflow component responsible for parsing DAGs
-- API Server: The Airflow component responsible for serving the Airflow UI and API
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+This document provides end-to-end project documentation for the FMCG Medallion Pipeline, hosted in the [Promptgiga-edge/FMCG\_Medallion\_Pipeline](https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline) repository. It describes the overall architecture, data flow, business logic, orchestration, and deployment details.
 
-When all five containers are ready the command will open the browser to the Airflow UI at http://localhost:8080/. You should also be able to access your Postgres Database at 'localhost:5432/postgres' with username 'postgres' and password 'postgres'.
+---
 
-Note: If you already have either of the above ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+## 2. Business Context
 
-Deploy Your Project to Astronomer
-=================================
+Fast-moving consumer goods (FMCG) companies generate high volumes of transactional, inventory, and sales data. A robust data engineering solution is needed to ingest, process, and transform raw data into analytics-ready datasets for reporting, forecasting, and decision-making.
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+---
 
-Contact
-=======
+## 3. Project Objectives
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+* **Ingest** raw data from source systems (ERP, POS, inventory).
+* **Normalize** and store raw data in the Bronze layer.
+* **Cleanse** and enrich data in the Silver layer.
+* **Aggregate** and model data in the Gold layer for KPIs.
+* **Automate** pipelines via orchestrator (Airflow).
+* **Monitor** data quality and pipeline health.
+
+---
+
+## 4. Architecture Overview
+
+![Pipeline Architecture](docs/images/pipeline_architecture.png)
+
+#### 4.1. Pipeline Layers
+
+* **Bronze**: Raw, ingested data (immutable).
+* **Silver**: Cleansed, conformed data with standard schemas.
+* **Gold**: Aggregated, business-specific datasets.
+
+#### 4.2. Technology Stack
+
+| Layer / Component | Technology                  |
+| ----------------- | --------------------------- |
+| Data Storage      | PostgreSQL                  |
+| Orchestration     | Apache Airflow              |
+| Code & Transform  | Python (Pandas, SQLAlchemy) |
+| Visualization     | Power BI                    |
+| Source Control    | GitHub                      |
+
+---
+
+## 5. Data Sources
+
+1. **ERP System**: Product master, supplier data
+2. **Point-of-Sale (POS)**: Sales transactions
+3. **Warehouse**: Inventory levels, movements
+4. **External**: Holiday calendars, weather (optional)
+
+---
+
+## 6. Medallion Layers
+
+### 6.1. Bronze Layer
+
+* **Purpose**: Landing zone; raw ingestion
+* **Storage**: `## FMCG Medallion Pipeline Project Documentation
+
+---
+
+### Table of Contents
+
+1. [Introduction](#introduction)
+2. [Business Context](#business-context)
+3. [Project Objectives](#project-objectives)
+4. [Architecture Overview](#architecture-overview)
+
+   * 4.1. Pipeline Layers
+   * 4.2. Technology Stack
+5. [Data Sources](#data-sources)
+6. [Medallion Layers](#medallion-layers)
+
+   * 6.1. Bronze Layer
+   * 6.2. Silver Layer
+   * 6.3. Gold Layer
+7. [Business Logic](#business-logic)
+8. [Orchestration & Scheduling](#orchestration--scheduling)
+9. [Deployment & Infrastructure](#deployment--infrastructure)
+10. [Monitoring & Alerting](#monitoring--alerting)
+11. [Security & Governance](#security--governance)
+12. [Getting Started](#getting-started)
+13. [Contributing](#contributing)
+14. [License](#license)
+
+---
+
+## 1. Introduction
+
+This document provides end-to-end project documentation for the FMCG Medallion Pipeline, hosted in the [Promptgiga-edge/FMCG\_Medallion\_Pipeline](https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline) repository. It describes the overall architecture, data flow, business logic, orchestration, and deployment details.
+
+---
+
+## 2. Business Context
+
+Fast-moving consumer goods (FMCG) companies generate high volumes of transactional, inventory, and sales data. A robust data engineering solution is needed to ingest, process, and transform raw data into analytics-ready datasets for reporting, forecasting, and decision-making.
+
+---
+
+## 3. Project Objectives
+
+* **Ingest** raw data from source systems (ERP, POS, inventory).
+* **Normalize** and store raw data in the Bronze layer.
+* **Cleanse** and enrich data in the Silver layer.
+* **Aggregate** and model data in the Gold layer for KPIs.
+* **Automate** pipelines via orchestrator (Airflow).
+* **Monitor** data quality and pipeline health.
+
+---
+
+## 4. Architecture Overview
+
+![Pipeline Architecture](docs/images/pipeline_architecture.png)
+
+#### 4.1. Pipeline Layers
+
+* **Bronze**: Raw, ingested data (immutable).
+* **Silver**: Cleansed, conformed data with standard schemas.
+* **Gold**: Aggregated, business-specific datasets.
+
+#### 4.2. Technology Stack
+
+| Layer / Component | Technology                  |
+| ----------------- | --------------------------- |
+| Data Storage      | PostgreSQL                  |
+| Orchestration     | Apache Airflow              |
+| Code & Transform  | Python (Pandas, SQLAlchemy) |
+| Visualization     | Power BI                    |
+| Source Control    | GitHub                      |
+
+---
+
+## 5. Data Sources
+
+1. **ERP System**: Product master, supplier data
+2. **Point-of-Sale (POS)**: Sales transactions
+3. **Warehouse**: Inventory levels, movements
+4. **External**: Holiday calendars, weather (optional)
+
+---
+
+## 6. Medallion Layers
+
+### 6.1. Bronze Layer
+
+* **Purpose**: Landing zone; raw ingestion
+* **Storage**: `## FMCG Medallion Pipeline Project Documentation
+
+---
+
+### Table of Contents
+
+1. [Introduction](#introduction)
+2. [Business Context](#business-context)
+3. [Project Objectives](#project-objectives)
+4. [Architecture Overview](#architecture-overview)
+
+   * 4.1. Pipeline Layers
+   * 4.2. Technology Stack
+5. [Data Sources](#data-sources)
+6. [Medallion Layers](#medallion-layers)
+
+   * 6.1. Bronze Layer
+   * 6.2. Silver Layer
+   * 6.3. Gold Layer
+7. [Business Logic](#business-logic)
+8. [Orchestration & Scheduling](#orchestration--scheduling)
+9. [Deployment & Infrastructure](#deployment--infrastructure)
+10. [Monitoring & Alerting](#monitoring--alerting)
+11. [Security & Governance](#security--governance)
+12. [Getting Started](#getting-started)
+13. [Contributing](#contributing)
+14. [License](#license)
+
+---
+
+## 1. Introduction
+
+This document provides end-to-end project documentation for the FMCG Medallion Pipeline, hosted in the [Promptgiga-edge/FMCG\_Medallion\_Pipeline](https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline) repository. It describes the overall architecture, data flow, business logic, orchestration, and deployment details.
+
+---
+
+## 2. Business Context
+
+Fast-moving consumer goods (FMCG) companies generate high volumes of transactional, inventory, and sales data. A robust data engineering solution is needed to ingest, process, and transform raw data into analytics-ready datasets for reporting, forecasting, and decision-making.
+
+---
+
+## 3. Project Objectives
+
+* **Ingest** raw data from source systems (ERP, POS, inventory).
+* **Normalize** and store raw data in the Bronze layer.
+* **Cleanse** and enrich data in the Silver layer.
+* **Aggregate** and model data in the Gold layer for KPIs.
+* **Automate** pipelines via orchestrator (Airflow).
+* **Monitor** data quality and pipeline health.
+
+---
+
+## 4. Architecture Overview
+
+![Pipeline Architecture](docs/images/pipeline_architecture.png)
+
+#### 4.1. Pipeline Layers
+
+* **Bronze**: Raw, ingested data (immutable).
+* **Silver**: Cleansed, conformed data with standard schemas.
+* **Gold**: Aggregated, business-specific datasets.
+
+#### 4.2. Technology Stack
+
+| Layer / Component | Technology                  |
+| ----------------- | --------------------------- |
+| Data Storage      | PostgreSQL                  |
+| Orchestration     | Apache Airflow              |
+| Code & Transform  | Python (Pandas, SQLAlchemy) |
+| Visualization     | Power BI                    |
+| Source Control    | GitHub                      |
+
+---
+
+## 5. Data Sources
+
+1. **ERP System**: Product master, supplier data
+2. **Point-of-Sale (POS)**: Sales transactions
+3. **Warehouse**: Inventory levels, movements
+4. **External**: Holiday calendars, weather (optional)
+
+---
+
+## 6. Medallion Layers
+
+### 6.1. Bronze Layer
+
+* **Purpose**: Landing zone; raw ingestion
+* **Storage**: `bronze_customers.csv
+bronze_dates.csv
+bronze_order_lines.csv
+bronze_orders_agg.csv
+bronze_products.csv
+bronze_targets.csv`
+* **Transforms**: None; only type casting
+* **Schema**:
+
+  * `source_system` (STRING)
+  * `raw_payload` (JSONB)
+  * `ingest_timestamp` (TIMESTAMP)
+
+
+
+### 6.2. Silver Layer
+
+* **Purpose**: Data cleansing and conformance
+* **Storage**: `silver_<entity>`
+* **Transforms**:
+
+  * Null handling
+  * Type normalization (dates, numerics)
+  * Referential integrity checks
+  * Enrichment (lookup dimension data)
+
+
+
+### 6.3. Gold Layer
+
+* **Purpose**: Business-ready aggregates and metrics
+* **Storage**: `gold_summary.csv`
+* **Transforms**:
+
+  * Daily sales summary
+  * Inventory turnover calculation
+  * SKU-level forecast inputs
+
+
+
+---
+
+## 7. Business Logic
+
+1. **Daily Sales KPI**:
+
+   * Aggregate POS transactions by store, date, SKU.
+   * Calculate net sales, discounts applied, and returns.
+
+2. **Inventory Turnover**:
+
+   * Compute Days Inventory Outstanding (DIO) using daily closing balances.
+   * Flag SKUs with DIO > threshold for restock alerts.
+
+3. **Demand Forecasting Inputs**:
+
+   * Generate time-series input features (lag, rolling averages).
+   * Merge external calendar and promotion schedules.
+
+---
+
+## 8. Orchestration & Scheduling
+
+* **Airflow DAG**: `fmcg_medallion_pipeline_dag.py`
+* **Schedule**: Daily at 01:00 AM
+* **Tasks**:
+
+  1. Ingest raw data (bronze)
+  2. Bronze-to-Silver transforms
+  3. Silver-to-Gold aggregates
+  4. Data quality validation
+  5. Notification on success/failure
+
+---
+
+## 9. Deployment & Infrastructure
+
+* **Docker Compose** for local development:
+
+  * Services: `postgres`, `airflow-webserver`, `airflow-scheduler`
+* **Cloud Environment** (optional): AWS RDS, MWAA or GCP Composer
+
+---
+
+## 10. Monitoring & Alerting
+
+* **Data Quality**: `great_expectations` integration in Silver layer
+* **Airflow Alerts**: Email on failure; Slack notifications
+* **Dashboard**: Pipeline health summary in Power BI
+
+---
+
+## 11. Security & Governance
+
+* **Access Controls**: Role-based on PostgreSQL
+* **Secrets Management**: Environment variables in Docker/Airflow
+* **Data Lineage**: Maintained via table naming conventions
+
+---
+
+## 12. Getting Started
+
+1. **Clone Repository**:
+
+   ```bash
+   git clone https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline.git
+   cd FMCG_Medallion_Pipeline
+   ```
+2. **Configure `.env`** with DB and Airflow settings
+3. **Build & Launch**:
+
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+4. **Trigger DAG** in Airflow UI
+
+---
+
+## 13. Contributing
+
+* Follow the [Contributor Guidelines](CONTRIBUTING.md).
+* Submit PRs for enhancements or bug fixes.
+
+---
+
+## 14. License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+`
+* **Transforms**: None; only type casting
+* **Schema**:
+
+  * `source_system` (STRING)
+  * `raw_payload` (JSONB)
+  * `ingest_timestamp` (TIMESTAMP)
+
+> **Placeholder for Bronze Table Schema Diagram**
+> ![Bronze Schema](docs/images/bronze_schema.png)
+
+### 6.2. Silver Layer
+
+* **Purpose**: Data cleansing and conformance
+* **Storage**: `silver_<entity>`
+* **Transforms**:
+
+  * Null handling
+  * Type normalization (dates, numerics)
+  * Referential integrity checks
+  * Enrichment (lookup dimension data)
+
+> **Placeholder for Silver Transformation Workflow**
+> ![Silver Workflow](docs/images/silver_workflow.png)
+
+### 6.3. Gold Layer
+
+* **Purpose**: Business-ready aggregates and metrics
+* **Storage**: `gold_<report_name>`
+* **Transforms**:
+
+  * Daily sales summary
+  * Inventory turnover calculation
+  * SKU-level forecast inputs
+
+> **Placeholder for Gold Aggregation Diagram**
+> ![Gold Aggregation](docs/images/gold_aggregation.png)
+
+---
+
+## 7. Business Logic
+
+1. **Daily Sales KPI**:
+
+   * Aggregate POS transactions by store, date, SKU.
+   * Calculate net sales, discounts applied, and returns.
+
+2. **Inventory Turnover**:
+
+   * Compute Days Inventory Outstanding (DIO) using daily closing balances.
+   * Flag SKUs with DIO > threshold for restock alerts.
+
+3. **Demand Forecasting Inputs**:
+
+   * Generate time-series input features (lag, rolling averages).
+   * Merge external calendar and promotion schedules.
+
+---
+
+## 8. Orchestration & Scheduling
+
+* **Airflow DAG**: `fmcg_medallion_pipeline_dag.py`
+* **Schedule**: Daily at 01:00 AM
+* **Tasks**:
+
+  1. Ingest raw data (bronze)
+  2. Bronze-to-Silver transforms
+  3. Silver-to-Gold aggregates
+  4. Data quality validation
+  5. Notification on success/failure
+
+---
+
+## 9. Deployment & Infrastructure
+
+* **Docker Compose** for local development:
+
+  * Services: `postgres`, `airflow-webserver`, `airflow-scheduler`
+* **Cloud Environment** (optional): AWS RDS, MWAA or GCP Composer
+
+---
+
+## 10. Monitoring & Alerting
+
+* **Data Quality**: `great_expectations` integration in Silver layer
+* **Airflow Alerts**: Email on failure; Slack notifications
+* **Dashboard**: Pipeline health summary in Power BI
+
+---
+
+## 11. Security & Governance
+
+* **Access Controls**: Role-based on PostgreSQL
+* **Secrets Management**: Environment variables in Docker/Airflow
+* **Data Lineage**: Maintained via table naming conventions
+
+---
+
+## 12. Getting Started
+
+1. **Clone Repository**:
+
+   ```bash
+   git clone https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline.git
+   cd FMCG_Medallion_Pipeline
+   ```
+2. **Configure `.env`** with DB and Airflow settings
+3. **Build & Launch**:
+
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+4. **Trigger DAG** in Airflow UI
+
+---
+
+## 13. Contributing
+
+* Follow the [Contributor Guidelines](CONTRIBUTING.md).
+* Submit PRs for enhancements or bug fixes.
+
+---
+
+## 14. License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+`
+* **Transforms**: None; only type casting
+* **Schema**:
+
+  * `source_system` (STRING)
+  * `raw_payload` (JSONB)
+  * `ingest_timestamp` (TIMESTAMP)
+
+> **Placeholder for Bronze Table Schema Diagram**
+> ![Bronze Schema](docs/images/bronze_schema.png)
+
+### 6.2. Silver Layer
+
+* **Purpose**: Data cleansing and conformance
+* **Storage**: `silver_<entity>`
+* **Transforms**:
+
+  * Null handling
+  * Type normalization (dates, numerics)
+  * Referential integrity checks
+  * Enrichment (lookup dimension data)
+
+> **Placeholder for Silver Transformation Workflow**
+> ![Silver Workflow](docs/images/silver_workflow.png)
+
+### 6.3. Gold Layer
+
+* **Purpose**: Business-ready aggregates and metrics
+* **Storage**: `gold_<report_name>`
+* **Transforms**:
+
+  * Daily sales summary
+  * Inventory turnover calculation
+  * SKU-level forecast inputs
+
+> **Placeholder for Gold Aggregation Diagram**
+> ![Gold Aggregation](docs/images/gold_aggregation.png)
+
+---
+
+## 7. Business Logic
+
+1. **Daily Sales KPI**:
+
+   * Aggregate POS transactions by store, date, SKU.
+   * Calculate net sales, discounts applied, and returns.
+
+2. **Inventory Turnover**:
+
+   * Compute Days Inventory Outstanding (DIO) using daily closing balances.
+   * Flag SKUs with DIO > threshold for restock alerts.
+
+3. **Demand Forecasting Inputs**:
+
+   * Generate time-series input features (lag, rolling averages).
+   * Merge external calendar and promotion schedules.
+
+---
+
+## 8. Orchestration & Scheduling
+
+* **Airflow DAG**: `fmcg_medallion_pipeline_dag.py`
+* **Schedule**: Daily at 01:00 AM
+* **Tasks**:
+
+  1. Ingest raw data (bronze)
+  2. Bronze-to-Silver transforms
+  3. Silver-to-Gold aggregates
+  4. Data quality validation
+  5. Notification on success/failure
+
+---
+
+## 9. Deployment & Infrastructure
+
+* **Docker Compose** for local development:
+
+  * Services: `postgres`, `airflow-webserver`, `airflow-scheduler`
+* **Cloud Environment** (optional): AWS RDS, MWAA or GCP Composer
+
+---
+
+## 10. Monitoring & Alerting
+
+* **Data Quality**: `great_expectations` integration in Silver layer
+* **Airflow Alerts**: Email on failure; Slack notifications
+* **Dashboard**: Pipeline health summary in Power BI
+
+---
+
+## 11. Security & Governance
+
+* **Access Controls**: Role-based on PostgreSQL
+* **Secrets Management**: Environment variables in Docker/Airflow
+* **Data Lineage**: Maintained via table naming conventions
+
+---
+
+## 12. Getting Started
+
+1. **Clone Repository**:
+
+   ```bash
+   git clone https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline.git
+   cd FMCG_Medallion_Pipeline
+   ```
+2. **Configure `.env`** with DB and Airflow settings
+3. **Build & Launch**:
+
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+4. **Trigger DAG** in Airflow UI
+
+---
+
+## 13. Contributing
+
+* Follow the [Contributor Guidelines](CONTRIBUTING.md).
+* Submit PRs for enhancements or bug fixes.
+
+---
+
+## 14. License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
