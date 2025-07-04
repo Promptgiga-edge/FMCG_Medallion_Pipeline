@@ -81,7 +81,7 @@ bronze_targets.csv`
 ### 6.2. Silver Layer
 
 * **Purpose**: Data cleansing and conformance
-* **Storage**: `silver_<entity>`
+* **Storage**: `silver_orders.csv`
 * **Transforms**:
 
   * Null handling
