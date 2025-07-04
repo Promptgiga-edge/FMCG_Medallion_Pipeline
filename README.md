@@ -2,32 +2,6 @@
 
 ---
 
-### Table of Contents
-
-1. [Introduction](#introduction)
-2. [Business Context](#business-context)
-3. [Project Objectives](#project-objectives)
-4. [Architecture Overview](#architecture-overview)
-
-   * 4.1. Pipeline Layers
-   * 4.2. Technology Stack
-5. [Data Sources](#data-sources)
-6. [Medallion Layers](#medallion-layers)
-
-   * 6.1. Bronze Layer
-   * 6.2. Silver Layer
-   * 6.3. Gold Layer
-7. [Business Logic](#business-logic)
-8. [Orchestration & Scheduling](#orchestration--scheduling)
-9. [Deployment & Infrastructure](#deployment--infrastructure)
-10. [Monitoring & Alerting](#monitoring--alerting)
-11. [Security & Governance](#security--governance)
-12. [Getting Started](#getting-started)
-13. [Contributing](#contributing)
-14. [License](#license)
-
----
-
 ## 1. Introduction
 
 This document provides end-to-end project documentation for the FMCG Medallion Pipeline, hosted in the [Promptgiga-edge/FMCG\_Medallion\_Pipeline](https://github.com/Promptgiga-edge/FMCG_Medallion_Pipeline) repository. It describes the overall architecture, data flow, business logic, orchestration, and deployment details.
@@ -73,12 +47,14 @@ Fast-moving consumer goods (FMCG) companies generate high volumes of transaction
 
 ---
 
-## 5. Data Sources
+## 5. Data Tables
 
-1. **ERP System**: Product master, supplier data
-2. **Point-of-Sale (POS)**: Sales transactions
-3. **Warehouse**: Inventory levels, movements
-4. **External**: Holiday calendars, weather (optional)
+dim_customers.csv
+dim_date.csv
+dim_products.csv
+dim_targets_orders.csv
+fact_order_lines.csv
+fact_orders_aggregate.csv
 
 ---
 
