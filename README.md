@@ -143,8 +143,7 @@ bronze_targets.csv`
 * **Docker Compose** for local development:
 
   * Services: `postgres`, `airflow-webserver`, `airflow-scheduler`
-* **Cloud Environment** (optional): AWS RDS, MWAA or GCP Composer
-
+* **Data Warehouse**: postgres NeoDB Local Server
 ---
 
 ## 10. Monitoring & Alerting
