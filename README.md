@@ -53,7 +53,7 @@ Fast-moving consumer goods (FMCG) companies generate high volumes of transaction
 
 ## 4. Architecture Overview
 
-![Pipeline Architecture](docs/images/pipeline_architecture.png)
+![Pipeline Architecture](doc/data.png)
 
 #### 4.1. Pipeline Layers
 
