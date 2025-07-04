@@ -126,7 +126,7 @@ bronze_targets.csv`
 
 ## 8. Orchestration & Scheduling
 
-* **Airflow DAG**: `fmcg_medallion_pipeline_dag.py`
+* **Airflow DAG**: `medallion_pipeline_dag.py`
 * **Schedule**: Daily at 01:00 AM
 * **Tasks**:
 
@@ -159,7 +159,6 @@ bronze_targets.csv`
 
 * **Access Controls**: Role-based on PostgreSQL
 * **Secrets Management**: Environment variables in Docker/Airflow
-* **Data Lineage**: Maintained via table naming conventions
 
 ---
 
